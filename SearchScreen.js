@@ -146,7 +146,7 @@ var SearchScreen = React.createClass({
 
         this.setState({
           isLoading: false,
-          dataSource: this.getDataSource(responseData.movies),
+          dataSource: this.getDataSource(responseData.hits),
         });
       })
       .done();
@@ -220,6 +220,10 @@ var SearchScreen = React.createClass({
   },
 
   getDataSource: function(movies: Array<any>): ListView.DataSource {
+    //console.log(this);
+    //console.log(this.state);
+    //console.log(this.state.dataSource);
+    //console.log(movies);
     return this.state.dataSource.cloneWithRows(movies);
   },
 

@@ -32,7 +32,7 @@ var getTextFromScore = require('./getTextFromScore');
 
 var MovieCell = React.createClass({
   render: function() {
-    var criticsScore = this.props.movie.ratings.critics_score;
+    var criticsScore = 99.9; //this.props.movie.ratings.critics_score;
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
@@ -53,10 +53,10 @@ var MovieCell = React.createClass({
             />
             <View style={styles.textContainer}>
               <Text style={styles.movieTitle} numberOfLines={2}>
-                {this.props.movie.title}
+                {this.props.movie.name}
               </Text>
               <Text style={styles.movieYear} numberOfLines={1}>
-                {this.props.movie.year}
+                {this.props.movie.id}
                 {' '}&bull;{' '}
                 <Text style={getStyleFromScore(criticsScore)}>
                   Critics {getTextFromScore(criticsScore)}

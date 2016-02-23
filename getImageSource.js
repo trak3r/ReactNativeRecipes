@@ -16,10 +16,13 @@
 'use strict';
 
 function getImageSource(movie: Object, kind: ?string): {uri: ?string} {
+  var uri = 'http://demo.nutrio.com' + movie.images[0].url;
+  /*
   var uri = movie && movie.posters ? movie.posters.thumbnail : null;
   if (uri && kind) {
     uri = uri.replace('tmb', kind);
   }
+  */
   return { uri };
 }
 

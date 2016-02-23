@@ -37,6 +37,12 @@ var MovieCell = React.createClass({
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
     }
+                /*
+                {' '}&bull;{' '}
+                <Text style={getStyleFromScore(criticsScore)}>
+                  Critics {getTextFromScore(criticsScore)}
+                </Text>
+                */
     return (
       <View>
         <TouchableElement
@@ -57,10 +63,6 @@ var MovieCell = React.createClass({
               </Text>
               <Text style={styles.movieYear} numberOfLines={1}>
                 {this.props.movie.id}
-                {' '}&bull;{' '}
-                <Text style={getStyleFromScore(criticsScore)}>
-                  Critics {getTextFromScore(criticsScore)}
-                </Text>
               </Text>
             </View>
           </View>

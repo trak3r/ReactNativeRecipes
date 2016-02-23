@@ -31,7 +31,7 @@ var MoviesApp = React.createClass({
       <NavigatorIOS
         style={styles.container}
         initialRoute={{
-          title: 'Movies',
+          title: 'Recipes',
           component: SearchScreen,
         }}
       />

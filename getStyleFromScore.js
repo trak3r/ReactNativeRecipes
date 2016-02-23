@@ -11,42 +11,38 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * @providesModule MoviesApp
  * @flow
  */
 'use strict';
 
 var React = require('react-native');
 var {
-  AppRegistry,
-  NavigatorIOS,
   StyleSheet,
 } = React;
 
-var SearchScreen = require('./SearchScreen');
+var MAX_VALUE = 200;
 
-var MoviesApp = React.createClass({
-  render: function() {
-    return (
-      <NavigatorIOS
-        style={styles.container}
-        initialRoute={{
-          title: 'Movies',
-          component: SearchScreen,
-        }}
-      />
-    );
+import type { StyleObj } from 'StyleSheetTypes';
+
+function getStyleFromScore(score: number): StyleObj {
+  if (score < 0) {
+    return styles.noScore;
   }
-});
+
+  var normalizedScore = Math.round((score / 100) * MAX_VALUE);
+  return {
+    color: 'rgb(' +
+      (MAX_VALUE - normalizedScore) + ', ' +
+      normalizedScore + ', ' +
+      0 +
+    ')'
+  };
+}
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
+  noScore: {
+    color: '#999999',
   },
 });
 
-//AppRegistry.registerComponent('MoviesApp', () => MoviesApp);
-AppRegistry.registerComponent('ReactNativeRecipes', () => MoviesApp);
-
-module.exports = MoviesApp;
+module.exports = getStyleFromScore;

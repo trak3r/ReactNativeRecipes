@@ -78,24 +78,6 @@ var SearchScreen = React.createClass({
     this.searchRecipes('steak');
   },
 
-  _urlForQueryAndPage: function(query: string, pageNumber: number): string {
-    var apiKey = API_KEYS[this.state.queryNumber % API_KEYS.length];
-    if (query) {
-      return (
-        API_URL
-        //API_URL + 'recipes.json?apikey=' + apiKey + '&q=' +
-        //encodeURIComponent(query) + '&page_limit=20&page=' + pageNumber
-      );
-    } else {
-      // With no query, load latest recipes
-      return (
-        API_URL
-        //API_URL + 'lists/recipes/in_theaters.json?apikey=' + apiKey +
-        //'&page_limit=20&page=' + pageNumber
-      );
-    }
-  },
-
   searchRecipes: function(query: string) {
     this.timeoutID = null;
 
@@ -149,7 +131,7 @@ var SearchScreen = React.createClass({
       .then((responseData) => {
         //console.log(responseData);
         LOADING[query] = false;
-        resultsCache.totalForQuery[query] = responseData.meals.length;
+        resultsCache.totalForQuery[query] = responseData.total_records;
         resultsCache.dataForQuery[query] = responseData.meals;
         resultsCache.nextPageNumberForQuery[query] = 2;
 

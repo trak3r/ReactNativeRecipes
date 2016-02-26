@@ -32,17 +32,10 @@ var getTextFromScore = require('./getTextFromScore');
 
 var RecipeCell = React.createClass({
   render: function() {
-    var criticsScore = 99.9; //this.props.recipe.ratings.critics_score;
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
     }
-                /*
-                {' '}&bull;{' '}
-                <Text style={getStyleFromScore(criticsScore)}>
-                  Critics {getTextFromScore(criticsScore)}
-                </Text>
-                */
     return (
       <View>
         <TouchableElement
@@ -62,7 +55,7 @@ var RecipeCell = React.createClass({
                 {this.props.recipe.name}
               </Text>
               <Text style={styles.recipeYear} numberOfLines={1}>
-                {this.props.recipe.id}
+                {this.props.recipe.external_id}
               </Text>
             </View>
           </View>

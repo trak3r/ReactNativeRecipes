@@ -25,7 +25,7 @@ var {
   Text,
   View,
 } = React;
-//var TimerMixin = require('react-timer-mixin');
+var TimerMixin = require('react-timer-mixin');
 
 var invariant = require('invariant');
 var dismissKeyboard = require('dismissKeyboard');
@@ -58,7 +58,7 @@ var resultsCache = {
 var LOADING = {};
 
 var SearchScreen = React.createClass({
-  //mixins: [TimerMixin],
+  mixins: [TimerMixin],
 
   timeoutID: (null: any),
 

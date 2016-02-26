@@ -28,7 +28,7 @@ var getImageSource = require('./getImageSource');
 var getStyleFromScore = require('./getStyleFromScore');
 var getTextFromScore = require('./getTextFromScore');
 
-var MovieScreen = React.createClass({
+var RecipeScreen = React.createClass({
   render: function() {
     return (
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -37,26 +37,26 @@ var MovieScreen = React.createClass({
             * omit a property or set it to undefined if it's inside a shape,
             * even if it isn't required */}
           <Image
-            source={getImageSource(this.props.movie, 'det')}
+            source={getImageSource(this.props.recipe, 'det')}
             style={styles.detailsImage}
           />
           <View style={styles.rightPane}>
-            <Text style={styles.movieTitle}>{this.props.movie.title}</Text>
-            <Text>{this.props.movie.year}</Text>
+            <Text style={styles.recipeTitle}>{this.props.recipe.name}</Text>
+            <Text>{this.props.recipe.year}</Text>
             <View style={styles.mpaaWrapper}>
               <Text style={styles.mpaaText}>
-                {this.props.movie.mpaa_rating}
+                {this.props.recipe.mpaa_rating}
               </Text>
             </View>
-            <Ratings ratings={this.props.movie.ratings} />
+            <Ratings ratings={this.props.recipe.ratings} />
           </View>
         </View>
         <View style={styles.separator} />
         <Text>
-          {this.props.movie.synopsis}
+          {this.props.recipe.synopsis}
         </Text>
         <View style={styles.separator} />
-        <Cast actors={this.props.movie.abridged_cast} />
+        <Cast actors={this.props.recipe.abridged_cast} />
       </ScrollView>
     );
   },
@@ -64,8 +64,8 @@ var MovieScreen = React.createClass({
 
 var Ratings = React.createClass({
   render: function() {
-    var criticsScore = this.props.ratings.critics_score;
-    var audienceScore = this.props.ratings.audience_score;
+    var criticsScore = 99.9; //this.props.ratings.critics_score;
+    var audienceScore = 99.9; //this.props.ratings.audience_score;
 
     return (
       <View>
@@ -113,7 +113,7 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
-  movieTitle: {
+  recipeTitle: {
     flex: 1,
     fontSize: 16,
     fontWeight: '500',
@@ -163,4 +163,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = MovieScreen;
+module.exports = RecipeScreen;

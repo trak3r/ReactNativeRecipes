@@ -30,9 +30,9 @@ var getStyleFromScore = require('./getStyleFromScore');
 var getImageSource = require('./getImageSource');
 var getTextFromScore = require('./getTextFromScore');
 
-var MovieCell = React.createClass({
+var RecipeCell = React.createClass({
   render: function() {
-    var criticsScore = 99.9; //this.props.movie.ratings.critics_score;
+    var criticsScore = 99.9; //this.props.recipe.ratings.critics_score;
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
@@ -54,15 +54,15 @@ var MovieCell = React.createClass({
               * omit a property or set it to undefined if it's inside a shape,
               * even if it isn't required */}
             <Image
-              source={getImageSource(this.props.movie, 'det')}
+              source={getImageSource(this.props.recipe, 'det')}
               style={styles.cellImage}
             />
             <View style={styles.textContainer}>
-              <Text style={styles.movieTitle} numberOfLines={2}>
-                {this.props.movie.name}
+              <Text style={styles.recipeTitle} numberOfLines={2}>
+                {this.props.recipe.name}
               </Text>
-              <Text style={styles.movieYear} numberOfLines={1}>
-                {this.props.movie.id}
+              <Text style={styles.recipeYear} numberOfLines={1}>
+                {this.props.recipe.id}
               </Text>
             </View>
           </View>
@@ -76,13 +76,13 @@ var styles = StyleSheet.create({
   textContainer: {
     flex: 1,
   },
-  movieTitle: {
+  recipeTitle: {
     flex: 1,
     fontSize: 16,
     fontWeight: '500',
     marginBottom: 2,
   },
-  movieYear: {
+  recipeYear: {
     color: '#999999',
     fontSize: 12,
   },
@@ -105,4 +105,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = MovieCell;
+module.exports = RecipeCell;

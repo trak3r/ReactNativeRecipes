@@ -30,8 +30,8 @@ var {
 var invariant = require('invariant');
 var dismissKeyboard = require('dismissKeyboard');
 
-var MovieCell = require('./MovieCell');
-var MovieScreen = require('./MovieScreen');
+var RecipeCell = require('./RecipeCell');
+var RecipeScreen = require('./RecipeScreen');
 var SearchBar = require('SearchBar');
 
 /**
@@ -75,7 +75,7 @@ var SearchScreen = React.createClass({
   },
 
   componentDidMount: function() {
-    this.searchMovies('');
+    this.searchRecipes('');
   },
 
   _urlForQueryAndPage: function(query: string, pageNumber: number): string {
@@ -83,20 +83,20 @@ var SearchScreen = React.createClass({
     if (query) {
       return (
         API_URL
-        //API_URL + 'movies.json?apikey=' + apiKey + '&q=' +
+        //API_URL + 'recipes.json?apikey=' + apiKey + '&q=' +
         //encodeURIComponent(query) + '&page_limit=20&page=' + pageNumber
       );
     } else {
-      // With no query, load latest movies
+      // With no query, load latest recipes
       return (
         API_URL
-        //API_URL + 'lists/movies/in_theaters.json?apikey=' + apiKey +
+        //API_URL + 'lists/recipes/in_theaters.json?apikey=' + apiKey +
         //'&page_limit=20&page=' + pageNumber
       );
     }
   },
 
-  searchMovies: function(query: string) {
+  searchRecipes: function(query: string) {
     this.timeoutID = null;
 
     this.setState({filter: query});
@@ -134,9 +134,10 @@ var SearchScreen = React.createClass({
         });
       })
       .then((responseData) => {
+        console.log(responseData);
         LOADING[query] = false;
         resultsCache.totalForQuery[query] = responseData.total;
-        resultsCache.dataForQuery[query] = responseData.movies;
+        resultsCache.dataForQuery[query] = responseData.recipes;
         resultsCache.nextPageNumberForQuery[query] = 2;
 
         if (this.state.filter !== query) {
@@ -192,17 +193,17 @@ var SearchScreen = React.createClass({
         });
       })
       .then((responseData) => {
-        var moviesForQuery = resultsCache.dataForQuery[query].slice();
+        var recipesForQuery = resultsCache.dataForQuery[query].slice();
 
         LOADING[query] = false;
         // We reached the end of the list before the expected number of results
-        if (!responseData.movies) {
-          resultsCache.totalForQuery[query] = moviesForQuery.length;
+        if (!responseData.recipes) {
+          resultsCache.totalForQuery[query] = recipesForQuery.length;
         } else {
-          for (var i in responseData.movies) {
-            moviesForQuery.push(responseData.movies[i]);
+          for (var i in responseData.recipes) {
+            recipesForQuery.push(responseData.recipes[i]);
           }
-          resultsCache.dataForQuery[query] = moviesForQuery;
+          resultsCache.dataForQuery[query] = recipesForQuery;
           resultsCache.nextPageNumberForQuery[query] += 1;
         }
 
@@ -219,27 +220,27 @@ var SearchScreen = React.createClass({
       .done();
   },
 
-  getDataSource: function(movies: Array<any>): ListView.DataSource {
+  getDataSource: function(recipes: Array<any>): ListView.DataSource {
     //console.log(this);
     //console.log(this.state);
     //console.log(this.state.dataSource);
-    //console.log(movies);
-    return this.state.dataSource.cloneWithRows(movies);
+    //console.log(recipes);
+    return this.state.dataSource.cloneWithRows(recipes);
   },
 
-  selectMovie: function(movie: Object) {
+  selectRecipe: function(recipe: Object) {
     if (Platform.OS === 'ios') {
       this.props.navigator.push({
-        title: movie.title,
-        component: MovieScreen,
-        passProps: {movie},
+        title: recipe.title,
+        component: RecipeScreen,
+        passProps: {recipe},
       });
     } else {
       dismissKeyboard();
       this.props.navigator.push({
-        title: movie.title,
-        name: 'movie',
-        movie: movie,
+        title: recipe.title,
+        name: 'recipe',
+        recipe: recipe,
       });
     }
   },
@@ -248,7 +249,7 @@ var SearchScreen = React.createClass({
     var filter = event.nativeEvent.text.toLowerCase();
 
     this.clearTimeout(this.timeoutID);
-    this.timeoutID = this.setTimeout(() => this.searchMovies(filter), 100);
+    this.timeoutID = this.setTimeout(() => this.searchRecipes(filter), 100);
   },
 
   renderFooter: function() {
@@ -281,25 +282,25 @@ var SearchScreen = React.createClass({
   },
 
   renderRow: function(
-    movie: Object,
+    recipe: Object,
     sectionID: number | string,
     rowID: number | string,
     highlightRowFunc: (sectionID: ?number | string, rowID: ?number | string) => void,
   ) {
     return (
-      <MovieCell
-        key={movie.id}
-        onSelect={() => this.selectMovie(movie)}
+      <RecipeCell
+        key={recipe.id}
+        onSelect={() => this.selectRecipe(recipe)}
         onHighlight={() => highlightRowFunc(sectionID, rowID)}
         onUnhighlight={() => highlightRowFunc(null, null)}
-        movie={movie}
+        recipe={recipe}
       />
     );
   },
 
   render: function() {
     var content = this.state.dataSource.getRowCount() === 0 ?
-      <NoMovies
+      <NoRecipes
         filter={this.state.filter}
         isLoading={this.state.isLoading}
       /> :
@@ -331,20 +332,20 @@ var SearchScreen = React.createClass({
   },
 });
 
-var NoMovies = React.createClass({
+var NoRecipes = React.createClass({
   render: function() {
     var text = '';
     if (this.props.filter) {
       text = `No results for "${this.props.filter}"`;
     } else if (!this.props.isLoading) {
-      // If we're looking at the latest movies, aren't currently loading, and
+      // If we're looking at the latest recipes, aren't currently loading, and
       // still have no results, show a message
-      text = 'No movies found';
+      text = 'No recipes found';
     }
 
     return (
       <View style={[styles.container, styles.centerText]}>
-        <Text style={styles.noMoviesText}>{text}</Text>
+        <Text style={styles.noRecipesText}>{text}</Text>
       </View>
     );
   }
@@ -358,7 +359,7 @@ var styles = StyleSheet.create({
   centerText: {
     alignItems: 'center',
   },
-  noMoviesText: {
+  noRecipesText: {
     marginTop: 80,
     color: '#888888',
   },

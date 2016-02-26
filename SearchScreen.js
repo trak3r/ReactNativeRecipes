@@ -75,7 +75,7 @@ var SearchScreen = React.createClass({
   },
 
   componentDidMount: function() {
-    this.searchRecipes('');
+    this.searchRecipes('steak');
   },
 
   _urlForQueryAndPage: function(query: string, pageNumber: number): string {
@@ -133,7 +133,7 @@ var SearchScreen = React.createClass({
           page_number: 1,
           order_by: 'name',
           order_direction: 'asc',
-          term: 'chicken'
+          term: query
         })
       })
       .then((response) => response.json())

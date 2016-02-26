@@ -16,7 +16,8 @@
 'use strict';
 
 function getImageSource(movie: Object, kind: ?string): {uri: ?string} {
-  var uri = 'http://demo.nutrio.com' + movie.images[0].url;
+  //var uri = 'http://demo.nutrio.com' + movie.images[0].url;
+  var uri = 'http://demo.nutrio.com/images/ironchef/meals/full/black_bean_burritos_full.jpg';
   /*
   var uri = movie && movie.posters ? movie.posters.thumbnail : null;
   if (uri && kind) {

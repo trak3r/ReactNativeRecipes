@@ -122,7 +122,20 @@ var SearchScreen = React.createClass({
       isLoadingTail: false,
     });
 
-    fetch(this._urlForQueryAndPage(query, 1))
+    fetch('http://demo.nutrio.com/api-proxy/v4/search/recipes_by_keywords', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          page_size: 10,
+          page_number: 1,
+          order_by: 'name',
+          order_direction: 'asc',
+          term: 'chicken'
+        })
+      })
       .then((response) => response.json())
       .catch((error) => {
         LOADING[query] = false;
@@ -134,10 +147,10 @@ var SearchScreen = React.createClass({
         });
       })
       .then((responseData) => {
-        console.log(responseData);
+        //console.log(responseData);
         LOADING[query] = false;
-        resultsCache.totalForQuery[query] = responseData.total;
-        resultsCache.dataForQuery[query] = responseData.recipes;
+        resultsCache.totalForQuery[query] = responseData.meals.length;
+        resultsCache.dataForQuery[query] = responseData.meals;
         resultsCache.nextPageNumberForQuery[query] = 2;
 
         if (this.state.filter !== query) {
@@ -147,7 +160,7 @@ var SearchScreen = React.createClass({
 
         this.setState({
           isLoading: false,
-          dataSource: this.getDataSource(responseData.hits),
+          dataSource: this.getDataSource(responseData.meals),
         });
       })
       .done();
@@ -183,7 +196,21 @@ var SearchScreen = React.createClass({
 
     var page = resultsCache.nextPageNumberForQuery[query];
     invariant(page != null, 'Next page number for "%s" is missing', query);
-    fetch(this._urlForQueryAndPage(query, page))
+    console.log(query);
+    fetch('http://demo.nutrio.com/api-proxy/v4/search/recipes_by_keywords', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          page_size: 10,
+          page_number: page,
+          order_by: 'name',
+          order_direction: 'asc',
+          term: query
+        })
+      })
       .then((response) => response.json())
       .catch((error) => {
         console.error(error);
@@ -193,15 +220,16 @@ var SearchScreen = React.createClass({
         });
       })
       .then((responseData) => {
+        console.log(responseData);
         var recipesForQuery = resultsCache.dataForQuery[query].slice();
 
         LOADING[query] = false;
         // We reached the end of the list before the expected number of results
-        if (!responseData.recipes) {
+        if (!responseData.meals) {
           resultsCache.totalForQuery[query] = recipesForQuery.length;
         } else {
-          for (var i in responseData.recipes) {
-            recipesForQuery.push(responseData.recipes[i]);
+          for (var i in responseData.meals) {
+            recipesForQuery.push(responseData.meals[i]);
           }
           resultsCache.dataForQuery[query] = recipesForQuery;
           resultsCache.nextPageNumberForQuery[query] += 1;

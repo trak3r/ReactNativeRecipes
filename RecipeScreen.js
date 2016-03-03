@@ -42,13 +42,11 @@ var RecipeScreen = React.createClass({
           />
           <View style={styles.rightPane}>
             <Text style={styles.recipeTitle}>{this.props.recipe.name}</Text>
-            <Text>{this.props.recipe.year}</Text>
-            <View style={styles.mpaaWrapper}>
-              <Text style={styles.mpaaText}>
-                {this.props.recipe.mpaa_rating}
-              </Text>
-            </View>
-            <Ratings ratings={this.props.recipe.ratings} />
+            <Text style={styles.recipeYear} numberOfLines={1}>
+              {this.props.recipe.prep_time}
+              {' '}
+              minutes of preparation
+            </Text>
           </View>
         </View>
         <View style={styles.separator} />

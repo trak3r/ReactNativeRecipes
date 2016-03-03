@@ -55,7 +55,14 @@ var RecipeCell = React.createClass({
                 {this.props.recipe.name}
               </Text>
               <Text style={styles.recipeYear} numberOfLines={1}>
-                {this.props.recipe.external_id}
+                Serves
+                {' '}
+                {this.props.recipe.number_of_servings}
+              </Text>
+              <Text style={styles.recipeYear} numberOfLines={1}>
+                {this.props.recipe.total_time}
+                {' '}
+                minutes
               </Text>
             </View>
           </View>
